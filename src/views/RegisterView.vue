@@ -8,9 +8,10 @@
             <router-link :to="{ name: 'home' }">Have an account?</router-link>
           </p>
 
-          <ul class="error-messages">
-            <li>That email is already taken</li>
-          </ul>
+          <rw-validation-errors
+            v-if="validationErrors"
+            :validation-errors="validationErrors"
+          />
 
           <form @submit.prevent="onSubmit">
             <fieldset class="form-group">
@@ -18,6 +19,7 @@
                 class="form-control form-control-lg"
                 type="text"
                 placeholder="Username"
+                v-model="username"
               />
             </fieldset>
             <fieldset class="form-group">
@@ -25,6 +27,7 @@
                 class="form-control form-control-lg"
                 type="text"
                 placeholder="Email"
+                v-model="email"
               />
             </fieldset>
             <fieldset class="form-group">
@@ -32,6 +35,7 @@
                 class="form-control form-control-lg"
                 type="password"
                 placeholder="Password"
+                v-model="password"
               />
             </fieldset>
             <button
@@ -48,18 +52,37 @@
 </template>
 
 <script>
+import RwValidationErrors from '@/components/ValidationErros.vue'
+
 export default {
   name: 'RwRegister',
+  components: { RwValidationErrors },
+  data() {
+    return {
+      email: '',
+      password: '',
+      username: '',
+    }
+  },
   computed: {
     isSubmitting() {
       return this.$store.state.auth.isSubmitting
+    },
+    validationErrors() {
+      return this.$store.state.auth.validationErrors
     },
   },
   methods: {
     onSubmit() {
       this.$store
-        .dispatch('register', {})
-        .then((user) => console.log('Successfully register user,', user))
+        .dispatch('register', {
+          email: this.email,
+          username: this.username,
+          password: this.password,
+        })
+        .then(() => {
+          this.$router.push({ name: 'home' })
+        })
     },
   },
 }
