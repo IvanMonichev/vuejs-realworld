@@ -5,16 +5,15 @@
         >conduit
       </router-link>
       <ul class="nav navbar-nav pull-xs-right">
-        <template v-if="!isLoggedIn">
-          <li class="nav-item">
-            <!-- Add "active" class when you're on that page" -->
-            <router-link
-              class="nav-link"
-              :to="{ name: 'home' }"
-              active-class="active"
-              >Home
-            </router-link>
-          </li>
+        <li class="nav-item">
+          <router-link
+            class="nav-link"
+            :to="{ name: 'home' }"
+            active-class="active"
+            >Home
+          </router-link>
+        </li>
+        <template v-if="isAnonymous">
           <li class="nav-item">
             <router-link
               class="nav-link"
@@ -44,10 +43,10 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/profile/eric-simons">
-              <img src="" class="user-pic" />
-              Eric Simons
-            </a>
+            <router-link class="nav-link" :to="{ name: 'home' }">
+              <img :src="currentUser.image" class="user-pic" />
+              {{ currentUser.username }}
+            </router-link>
           </li>
         </template>
       </ul>
@@ -56,13 +55,17 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
+import { getterTypes } from '@/store/modules/auth'
 
 export default {
   name: 'RwTopBar',
-  computed: mapState({
-    currentUser: (state) => state.auth.currentUser,
-    isLoggedIn: (state) => state.auth.isLoggedIn,
-  }),
+  computed: {
+    ...mapGetters({
+      currentUser: getterTypes.currentUser,
+      isLoggedIn: getterTypes.isLoggedIn,
+      isAnonymous: getterTypes.isAnonymous,
+    }),
+  },
 }
 </script>

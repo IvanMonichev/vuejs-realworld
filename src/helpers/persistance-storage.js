@@ -1,4 +1,4 @@
-export const hetItem = (key) => {
+export const getItem = (key) => {
   try {
     return JSON.parse(localStorage.getItem(key))
   } catch (e) {
