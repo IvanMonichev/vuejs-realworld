@@ -33,6 +33,7 @@ const mutations = {
 const actions = {
   [actionTypes.getFeed](context, { apiUrl }) {
     return new Promise((resolve) => {
+      context.commit(mutationTypes.getFeedStart)
       feedApi
         .getFeed(apiUrl)
         .then((response) => {

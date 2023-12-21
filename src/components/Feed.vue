@@ -45,29 +45,36 @@
         </ul>
       </router-link>
     </div>
-  </div>
 
-  <ul class="pagination">
-    <li class="page-item active">
-      <a class="page-link" href="">1</a>
-    </li>
-    <li class="page-item">
-      <a class="page-link" href="">2</a>
-    </li>
-  </ul>
+    <rw-pagination
+      :current-page="currentPage"
+      :limit="limit"
+      :total="feed.articlesCount"
+      :url="baseUrl"
+    />
+  </div>
 </template>
 
 <script>
 import { actionTypes } from '@/store/modules/feed'
 import { mapState } from 'vuex'
+import RwPagination from '@/components/Pagination.vue'
+import { LIMIT } from '@/helpers/constants'
+import queryString from 'query-string'
 
 export default {
   name: 'RwFeed',
+  components: { RwPagination },
   props: {
     apiUrl: {
       type: String,
-      require: true,
+      required: true,
     },
+  },
+  data() {
+    return {
+      limit: LIMIT,
+    }
   },
   computed: {
     ...mapState({
@@ -75,9 +82,35 @@ export default {
       feed: (state) => state.feed.data,
       error: (state) => state.feed.error,
     }),
+    currentPage() {
+      return Number(this.$route.query.page || '1')
+    },
+    baseUrl() {
+      return this.$route.path
+    },
+    offset() {
+      return this.currentPage * LIMIT - LIMIT
+    },
+  },
+  watch: {
+    currentPage() {
+      this.fetchFeed()
+    },
   },
   mounted() {
-    this.$store.dispatch(actionTypes.getFeed, { apiUrl: this.apiUrl })
+    this.fetchFeed()
+  },
+  methods: {
+    fetchFeed() {
+      const parsedUrl = queryString.parseUrl(this.apiUrl)
+      const stringifiedParams = queryString.stringify({
+        limit: LIMIT,
+        offset: this.offset,
+        ...parsedUrl.query,
+      })
+      const apiUrlWithParams = `${parsedUrl.url}?${stringifiedParams}`
+      this.$store.dispatch(actionTypes.getFeed, { apiUrl: apiUrlWithParams })
+    },
   },
 }
 </script>
