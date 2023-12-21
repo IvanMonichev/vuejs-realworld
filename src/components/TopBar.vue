@@ -1,14 +1,14 @@
 <template>
   <nav class="navbar navbar-light">
     <div class="container">
-      <router-link class="navbar-brand" :to="{ name: 'home' }"
+      <router-link class="navbar-brand" :to="{ name: 'globalFeed' }"
         >conduit
       </router-link>
       <ul class="nav navbar-nav pull-xs-right">
         <li class="nav-item">
           <router-link
             class="nav-link"
-            :to="{ name: 'home' }"
+            :to="{ name: 'globalFeed' }"
             active-class="active"
             >Home
           </router-link>
@@ -33,17 +33,23 @@
         </template>
         <template v-if="isLoggedIn">
           <li class="nav-item">
-            <a class="nav-link" href="/editor">
+            <router-link class="nav-link" :to="{ name: 'createArticle' }">
               <i class="ion-compose"></i>&nbsp;New Article
-            </a>
+            </router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/settings">
+            <router-link class="nav-link" :to="{ name: 'settings' }">
               <i class="ion-gear-a"></i>&nbsp;Settings
-            </a>
+            </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'home' }">
+            <router-link
+              class="nav-link"
+              :to="{
+                name: 'userProfile',
+                params: { slug: currentUser.username },
+              }"
+            >
               <img :src="currentUser.image" class="user-pic" />
               {{ currentUser.username }}
             </router-link>

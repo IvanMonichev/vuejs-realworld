@@ -1,13 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import LoginView from '@/views/LoginView.vue'
+import GlobalFeedView from '@/views/GlobalFeedView.vue'
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView,
+    name: 'globalFeed',
+    component: GlobalFeedView,
   },
   {
     path: '/register',
@@ -18,6 +18,46 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginView,
+  },
+  {
+    path: '/feed',
+    name: 'yourFeed',
+    component: GlobalFeedView,
+  },
+  {
+    path: '/tags/:slug',
+    name: 'tag',
+    component: GlobalFeedView,
+  },
+  {
+    path: '/articles/new',
+    name: 'createArticle',
+    component: GlobalFeedView,
+  },
+  {
+    path: '/articles/:slug',
+    name: 'article',
+    component: GlobalFeedView,
+  },
+  {
+    path: '/articles/:slug/edit',
+    name: 'editArticle',
+    component: GlobalFeedView,
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    component: GlobalFeedView,
+  },
+  {
+    path: '/profiles/:slug',
+    name: 'userProfile',
+    component: GlobalFeedView,
+  },
+  {
+    path: '/profiles/:slug/favorites',
+    name: 'userProfileFavorites',
+    component: GlobalFeedView,
   },
 ]
 
