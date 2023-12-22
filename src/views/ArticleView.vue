@@ -60,10 +60,7 @@
           </p>
           <h2 id="introducing-ionic">Introducing RealWorld.</h2>
           <p>It's a great solution for learning how other frameworks work.</p>
-          <ul class="tag-list">
-            <li class="tag-default tag-pill tag-outline">realworld</li>
-            <li class="tag-default tag-pill tag-outline">implementations</li>
-          </ul>
+          <rw-tag-list :tags="article.tagList" />
         </div>
       </div>
 
@@ -174,10 +171,11 @@ import { getterTypes as authGetterTypes } from '@/store/modules/auth'
 import { mapGetters, mapState } from 'vuex'
 import RwLoading from '@/components/Loading.vue'
 import RwErrorMessage from '@/components/ErrorMessage.vue'
+import RwTagList from '@/components/TagList.vue'
 
 export default {
   name: 'RwArticle',
-  components: { RwErrorMessage, RwLoading },
+  components: { RwTagList, RwErrorMessage, RwLoading },
   mounted() {
     this.$store.dispatch(articleActionsTypes.getArticle, {
       slug: this.$route.params.slug,

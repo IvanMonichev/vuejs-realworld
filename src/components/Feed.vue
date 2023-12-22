@@ -39,10 +39,7 @@
         <h1>{{ article.title }}</h1>
         <p>{{ article.description }}</p>
         <span>Read more...</span>
-        <ul class="tag-list">
-          <li class="tag-default tag-pill tag-outline">realworld</li>
-          <li class="tag-default tag-pill tag-outline">implementations</li>
-        </ul>
+        <rw-tag-list :tags="article.tagList" />
       </router-link>
     </div>
 
@@ -63,10 +60,11 @@ import { LIMIT } from '@/helpers/constants'
 import queryString from 'query-string'
 import RwLoading from '@/components/Loading.vue'
 import RwErrorMessage from '@/components/ErrorMessage.vue'
+import RwTagList from '@/components/TagList.vue'
 
 export default {
   name: 'RwFeed',
-  components: { RwErrorMessage, RwLoading, RwPagination },
+  components: { RwTagList, RwErrorMessage, RwLoading, RwPagination },
   props: {
     apiUrl: {
       type: String,
