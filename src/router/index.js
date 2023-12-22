@@ -5,6 +5,8 @@ import GlobalFeedView from '@/views/GlobalFeedView.vue'
 import YoufFeedView from '@/views/YourFeedView.vue'
 import TagFeedView from '@/views/TagFeedView.vue'
 import ArticleView from '@/views/ArticleView.vue'
+import CreateArticleView from '@/views/CreateArticleView.vue'
+import EditArticleView from '@/views/EditArticleView.vue'
 
 const routes = [
   {
@@ -35,7 +37,7 @@ const routes = [
   {
     path: '/articles/new',
     name: 'createArticle',
-    component: GlobalFeedView,
+    component: CreateArticleView,
   },
   {
     path: '/articles/:slug',
@@ -45,7 +47,7 @@ const routes = [
   {
     path: '/articles/:slug/edit',
     name: 'editArticle',
-    component: GlobalFeedView,
+    component: EditArticleView,
   },
   {
     path: '/settings',
