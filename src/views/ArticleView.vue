@@ -31,19 +31,21 @@
             &nbsp; Follow Eric Simons <span class="counter">(10)</span>
           </button>
           &nbsp;&nbsp;
-          <button class="btn btn-sm btn-outline-primary">
-            <i class="ion-heart"></i>
-            &nbsp; Favorite Post <span class="counter">(29)</span>
-          </button>
-          <router-link
-            :to="{ name: 'editArticle', params: { slug: article.slug } }"
-            class="btn btn-sm btn-outline-secondary"
-          >
-            <i class="ion-edit"></i> Edit Article
-          </router-link>
-          <button class="btn btn-sm btn-outline-danger">
-            <i class="ion-trash-a"></i> Delete Article
-          </button>
+          <template v-if="isAuthor">
+            <button class="btn btn-sm btn-outline-primary">
+              <i class="ion-heart"></i>
+              &nbsp; Favorite Post <span class="counter">(29)</span>
+            </button>
+            <router-link
+              :to="{ name: 'editArticle', params: { slug: article.slug } }"
+              class="btn btn-sm btn-outline-secondary"
+            >
+              <i class="ion-edit"></i> Edit Article
+            </router-link>
+            <button class="btn btn-sm btn-outline-danger">
+              <i class="ion-trash-a"></i> Delete Article
+            </button>
+          </template>
         </div>
       </div>
     </div>
@@ -51,7 +53,7 @@
     <div class="container page">
       <rw-loading v-if="isLoading" />
       <rw-error-message v-if="error" :message="error" />
-      <div class="row article-content">
+      <div class="row article-content" v-if="article">
         <div class="col-md-12">
           <p>
             {{ article.body }}
@@ -89,7 +91,7 @@
           <button class="btn btn-sm btn-outline-secondary">
             <i class="ion-edit"></i> Edit Article
           </button>
-          <button class="btn btn-sm btn-outline-danger">
+          <button class="btn btn-sm btn-outline-danger" @click="deleteArticle">
             <i class="ion-trash-a"></i> Delete Article
           </button>
         </div>
@@ -167,8 +169,9 @@
 </template>
 
 <script>
-import { actionTypes } from '@/store/modules/article'
-import { mapState } from 'vuex'
+import { actionTypes as articleActionsTypes } from '@/store/modules/article'
+import { getterTypes as authGetterTypes } from '@/store/modules/auth'
+import { mapGetters, mapState } from 'vuex'
 import RwLoading from '@/components/Loading.vue'
 import RwErrorMessage from '@/components/ErrorMessage.vue'
 
@@ -176,7 +179,7 @@ export default {
   name: 'RwArticle',
   components: { RwErrorMessage, RwLoading },
   mounted() {
-    this.$store.dispatch(actionTypes.getArticle, {
+    this.$store.dispatch(articleActionsTypes.getArticle, {
       slug: this.$route.params.slug,
     })
   },
@@ -186,6 +189,27 @@ export default {
       error: (state) => state.article.error,
       article: (state) => state.article.data,
     }),
+    ...mapGetters({
+      currentUser: authGetterTypes.currentUser,
+    }),
+    isAuthor() {
+      if (!this.currentUser || !this.article) {
+        return false
+      }
+
+      return this.currentUser === this.article.author.username
+    },
+  },
+  methods: {
+    deleteArticle() {
+      this.$store
+        .dispatch(articleActionsTypes.deleteArticle, {
+          slug: this.$route.params.slug,
+        })
+        .then(() => {
+          this.$router.push({ name: 'globalFeed' })
+        })
+    },
   },
 }
 </script>
