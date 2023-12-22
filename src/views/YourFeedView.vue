@@ -24,11 +24,11 @@ import RwBanner from '@/components/Banner.vue'
 import RwFeedToggler from '@/components/FeedToggler.vue'
 
 export default {
-  name: 'RwGlobalFeed',
+  name: 'RwYourFeed',
   components: { RwFeedToggler, RwBanner, RwPopularTags, RwFeed },
   data() {
     return {
-      apiUrl: '/articles',
+      apiUrl: '/articles/feed',
     }
   },
 }

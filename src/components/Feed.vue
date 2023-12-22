@@ -1,6 +1,6 @@
 <template>
-  <div v-if="isLoading">Loading...</div>
-  <div v-if="error">Something bad happened</div>
+  <rw-loading v-if="isLoading" />
+  <rw-error-message v-if="error" :message="error" />
   <div v-if="feed">
     <div
       class="article-preview"
@@ -61,10 +61,12 @@ import { mapState } from 'vuex'
 import RwPagination from '@/components/Pagination.vue'
 import { LIMIT } from '@/helpers/constants'
 import queryString from 'query-string'
+import RwLoading from '@/components/Loading.vue'
+import RwErrorMessage from '@/components/ErrorMessage.vue'
 
 export default {
   name: 'RwFeed',
-  components: { RwPagination },
+  components: { RwErrorMessage, RwLoading, RwPagination },
   props: {
     apiUrl: {
       type: String,
@@ -94,6 +96,9 @@ export default {
   },
   watch: {
     currentPage() {
+      this.fetchFeed()
+    },
+    apiUrl() {
       this.fetchFeed()
     },
   },

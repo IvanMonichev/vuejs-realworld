@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
-    <div v-if="isLoading">Loading...</div>
-    <div v-if="error">Something bad happened...</div>
+    <rw-loading v-if="isLoading" />
+    <rw-error-message v-if="error" :message="error" />
     <template v-if="popularTags">
       <p>Popular Tags</p>
       <div class="tag-list">
@@ -21,9 +21,12 @@
 <script>
 import { mapState } from 'vuex'
 import { actionTypes } from '@/store/modules/popular-tags'
+import RwLoading from '@/components/Loading.vue'
+import RwErrorMessage from '@/components/ErrorMessage.vue'
 
 export default {
   name: 'RwPopularTags',
+  components: { RwErrorMessage, RwLoading },
   computed: {
     ...mapState({
       isLoading: (state) => state.popularTags.isLoading,

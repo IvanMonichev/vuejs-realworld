@@ -5,7 +5,7 @@
     <div class="container page">
       <div class="row">
         <div class="col-md-9">
-          <rw-feed-toggler />
+          <rw-feed-toggler :tag-name="tagName"></rw-feed-toggler>
           <rw-feed :api-url="apiUrl" />
         </div>
 
@@ -24,12 +24,16 @@ import RwBanner from '@/components/Banner.vue'
 import RwFeedToggler from '@/components/FeedToggler.vue'
 
 export default {
-  name: 'RwGlobalFeed',
+  name: 'RwTagFeed',
   components: { RwFeedToggler, RwBanner, RwPopularTags, RwFeed },
-  data() {
-    return {
-      apiUrl: '/articles',
-    }
+  computed: {
+    tagName() {
+      return this.$route.params.slug
+    },
+    apiUrl() {
+      return `/articles?tag=${this.tagName}`
+    },
   },
+  watch: {},
 }
 </script>
